@@ -1,0 +1,146 @@
+<style>
+    footer {
+        color: #1257a2;
+        background-color: inherit;
+        border-bottom: 5px solid #1257a2;
+        margin-top: 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .bg-blue {
+        background-color: #1257a2;
+        color: #ccf3f6;
+    }
+    
+    h4.small-title {
+        color: inherit;
+        margin-bottom: 10px;
+    }
+    
+    hr {
+        margin-top: 0;
+        margin-bottom: 0;
+        border: 0;
+        border-top: 2px solid #ccf3f6;
+    }
+    
+    .footer-pannel {
+        padding: 30px;
+        width: 100%;
+        position: relative;
+        z-index: 100;
+    }
+    
+    .footer-link {
+        color: #CCF3F6;
+        padding: 15px 0 0 0;
+        font-size: 14px;
+        display: block;
+    }
+    .footer-link:hover, .footer-link:focus{
+        color: #CCF3F6;
+        text-decoration: none;
+    }
+</style>
+
+<!-- BEGIN 友情链接 关于中心 -->
+<div class="the-box no-border bg-blue clearfix no-margin footer-pannel">
+    <div class="col-xs-12 col-sm-9" style="padding-left:0; ">
+        <h4 class="small-title">
+            <%= channelCfg.footer.left.name%>
+        </h4>
+        <hr>
+        <% if (initData.hasOwnProperty(channelCfg.footer.left.id)) { %>
+            <div class="the-box transparent clearfix no-margin" style="padding-bottom: 0;">
+            <% if (initData.hasOwnProperty(channelCfg.footer.left.id)) { %>
+                <% for (var i = 0; i < initData[channelCfg.footer.left.id].length; i++) { %>
+                    <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2 footer-link" href="<%= initData[channelCfg.footer.left.id][i].href%>" target="_blank">
+                        <%= initData[channelCfg.footer.left.id][i].title%>
+                    </a>
+                <% } %>
+            <% } %>
+            </div>
+         <% } %>
+    </div>
+    <div class="col-xs-12 col-sm-3" style="padding-right:0; ">
+        <% if (initData.menus && initData.menus.length > 0) { %>
+            <% for (var j = 0; j < initData.menus.length; j++) { %>
+                <% if (initData.menus[j].id ==  channelCfg.footer.right.id) { %>
+                    <h4 class="small-title">
+                        <%= channelCfg.footer.right.name%>
+                    </h4>
+                    <hr>
+                    <div class="the-box transparent clearfix no-margin" style="padding-bottom: 0;">
+                        <% if (initData.menus[j].child.length > 0) { %>
+                            <% for (var k = 0; k < initData.menus[j].child.length; k++) { %>
+                            <a class="col-xs-6 col-sm-6 col-lg-4 footer-link" href="/channels/<%= initData.menus[j].child[k].id%>/list" id="<%= initData.menus[j].child[k].id%>">
+                                <%= initData.menus[j].child[k].name%>
+                            </a>
+                            <% } %>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% } %>
+        <% } %>
+
+    </div>
+</div>
+
+<!-- END 友情链接 关于中心 -->
+
+<!-- BEGIN FOOTER -->
+<footer style="width: 100%;bottom: 0;">
+    Copyrigth &copy; 2013-1017 国家卫生信息共享技术及应用工程技术研究中心, All Rights Reserved
+</footer>
+<!-- END FOOTER -->
+</div>
+
+    <!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/plugins/ztree/jquery.ztree.core-3.5.min.js"></script>
+    <script src="/plugins/pagination/jquery.twbsPagination.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/plugins/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <script>
+        $(function () {
+            // 计算高度
+            var minH = document.documentElement.clientHeight - 300;
+            $("#content").css("min-height", minH + "px");
+            $("#content  #content-right").css("min-height", $("#content").height() + "px");
+
+            $(".pannel-list").mouseover(function(){ // 栏目悬停切换显示内容列表事件
+                $(this).parent().parent().find('li').removeClass('active');
+                $(this).parent().addClass('active');
+                $(this).parent().parent().parent().nextAll('ul').addClass('hide');
+                $(this).parent().parent().parent().nextAll('ul[data-id="'+$(this).parent().attr('id')+'"]').removeClass('hide');
+                $(this).parent().parent().find('div a').attr('onclick', 'showMoreContent(\'' + $(this).parent().attr('id') + '\')');
+            });
+
+            $(window).resize(function () {
+                $('#main-content').css('padding-top', $('.navbar-fixed-top').height());
+                var minH = document.documentElement.clientHeight - 252;
+                $("#content").css("min-height", minH + "px");
+                $("#content  #content-right").css("min-height", $("#content").height() + "px");
+            });
+            $('.owl-carousel').owlCarousel({ // 成果展示部分轮播插件
+                autoPlay: 3000,
+                items : 7,
+                itemsDesktop : [1199,5],
+                itemsDesktopSmall : [979,4],
+                lazyLoad: true,
+                lazyEffect: 400,
+                stopOnHover: true
+            });
+        });
+
+         // 更多按钮点击事件
+        function showMoreContent(v) {
+            window.location.href = '/channels/'+v+'/list';
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,10 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-</head>
-<body>
-<h1>404</h1>
-</body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<title>404 | 未找到</title>
+
+		<!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- MAIN CSS (REQUIRED ALL PAGE)-->
+		<link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link href="/css/style.css" rel="stylesheet">
+		<link href="/css/style-responsive.css" rel="stylesheet">
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+ 
+	<body class="login tooltips bg-info">
+		
+	
+		
+		
+		
+		<!--
+		===========================================================
+		BEGIN PAGE
+		===========================================================
+		-->
+		<div class="login-header text-center">
+			<img src="/img/logo-login.png" class="logo" alt="Logo">
+		</div>
+		<div class="login-wrapper">
+			<h1 class="error-number">4<i class="fa fa-meh-o icon-xl icon-square icon-info"></i>4</h1>
+			<% if(error) {%>
+			<p><%= error%></p>
+			<% }%>
+			<p class="text-center"><strong><a href="/admin">返回首页</a></strong></p>
+		</div><!-- /.login-wrapper -->
+		<!--
+		===========================================================
+		END PAGE
+		===========================================================
+		-->
+		
+		<!--
+		===========================================================
+		Placed at the end of the document so the pages load faster
+		===========================================================
+		-->
+		<!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		
+	</body>
 </html>

@@ -1,0 +1,459 @@
+<!-- BEGIN FOOTER -->
+<footer>
+    Copyrigth &copy; 2013-1017  国家卫生信息共享技术及应用工程技术研究中心, All Rights Reserved
+</footer>
+<!-- END FOOTER -->
+
+
+</div>
+<!-- /.page-content -->
+</div>
+<!-- /.wrapper -->
+<!-- END PAGE CONTENT -->
+
+
+
+<!-- BEGIN BACK TO TOP BUTTON -->
+<div id="back-top">
+    <a href="#top"><i class="fa fa-chevron-up"></i></a>
+</div>
+<!-- END BACK TO TOP -->
+
+
+<!--
+		===========================================================
+		END PAGE
+		===========================================================
+		-->
+
+<!--
+		===========================================================
+		Placed at the end of the document so the pages load faster
+		===========================================================
+		-->
+<!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/plugins/retina/retina.min.js"></script>
+<script src="/plugins/nicescroll/jquery.nicescroll.js"></script>
+<script src="/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/plugins/backstretch/jquery.backstretch.min.js"></script>
+<script src="/js/jquery.alerts.js"></script>
+<script src="/js/moment.min.js"></script>
+
+<!-- PLUGINS -->
+<script src="/plugins/prettify/prettify.js"></script>
+<script src="/plugins/chosen/chosen.jquery.min.js"></script>
+<script src="/plugins/icheck/icheck.min.js"></script>
+<script src="/plugins/mask/jquery.mask.min.js"></script>
+<script src="/plugins/validator/bootstrapValidator.min.js"></script>
+<script src="/plugins/datatable/js/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatable/js/bootstrap.datatable.js"></script>
+<!--<script src="/plugins/datatable/js/dataTables.select.min.js"></script>-->
+<script src="/plugins/summernote/summernote.js"></script>
+<script src="/plugins/summernote/summernote-zh-CN.js"></script>
+<script src="/plugins/slider/bootstrap-slider.js"></script>
+<script src="/plugins/toastr/toastr.js"></script>
+<script src="/plugins/ztree/jquery.ztree.all-3.5.js"></script>
+<script src="/plugins/select2/select2.full.min.js"></script>
+<script src="/plugins/plupload/js/plupload.full.min.js"></script>
+<script src="/plugins/plupload/js/i18n/zh_CN.js"></script>
+<script src="/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!-- 项目 script-->
+<script src="pagejs/index.js"></script>
+
+<!-- MAIN APPS JS -->
+<script src="/js/apps.js"></script>
+
+<script>
+    var channelId = '';
+    var channelType = '';
+    var channelName = '';
+
+    function renderContainer(v) {
+        $('#container-fluid').load(v);
+    }
+    // 个人信息修改--表单验证
+    function valInfoForm() {
+        $('#info-form').bootstrapValidator({
+                message: 'This value is not valid',
+                excluded: ':disabled',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    'info-name': {
+                        validators: {
+                            notEmpty: {
+                                message: '用户名不能为空'
+                            }
+                        }
+                    },
+                    'info-email': {
+                        validators: {
+                            notEmpty: {
+                                message: '邮箱不能为空'
+                            },
+                            regexp: {
+                                regexp: /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/,
+                                message: '邮箱格式错误（如trinity@wondersgroup.com）'
+                            }
+                        }
+                    },
+                    'info-tel': {
+                        validators: {
+                            regexp: {
+                                regexp: /^1(3|4|5|7|8)\d{9}$/,
+                                message: '电话号码格式格式错误'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('init.field.bv', function(e, data) {
+                var $parent = data.element.parents('.form-group');
+                var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
+                $icon.on('click.clearing', function() {
+                    if ($icon.hasClass('glyphicon-remove')) {
+                        data.bv.resetField(data.element);
+                    }
+                });
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/setting',
+                    data: {
+                        name: $('#info-name').val(),
+                        email: $('#info-email').val(),
+                        tel: $('#info-tel').val()
+                    },
+                    success: function(rm) {
+                        if (rm.code === 1) {
+                            var name = $('#info-name').val()
+                            $('#top-username').text("你好, " + name);
+                            $('#info-name').attr("value", name);
+                            toastr.success("个人信息修改成功")
+                            $('#info-modal').modal('hide');
+                            $('#info-form').data('bootstrapValidator').resetForm();
+                            $('#info-form')[0].reset();
+                        } else {
+                            toastr.error(rm.msg)
+                            $('#info-form')[0].reset()
+                        }
+                    }
+                });
+            });
+    }
+
+    // 密码修改--表单验证
+    function valAccountForm() {
+        $('#account-form').on('init.field.bv', function(e, data) {
+            var $parent = data.element.parents('.form-group');
+            var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
+            $icon.on('click.clearing', function() {
+                if ($icon.hasClass('glyphicon-remove')) {
+                    data.bv.resetField(data.element);
+                }
+            });
+        }).bootstrapValidator({
+            message: 'This value is not valid',
+            excluded: ':disabled',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'old-pwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '此项不能为空'
+                        }
+                    }
+                },
+                'new-pwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '此项不能为空'
+                        },
+                        regexp: {
+                            regexp: /^[A-Za-z0-9]{6,20}$/,
+                            message: '密码由6-20位的字符、数字和下划线组成'
+                        }
+                    }
+                },
+                'confirm-pwd': {
+                    validators: {
+                        notEmpty: {
+                            message: '此项不能为空'
+                        },
+                        identical: {
+                            field: 'new-pwd',
+                            message: '两次密码输入不一致'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);
+            var oldPwd = $('#old-pwd').val();
+            var newPwd = $('#new-pwd').val();
+            $.ajax({
+                type: 'POST',
+                url: '/admin/account',
+                data: {
+                    oldPwd: oldPwd,
+                    newPwd: newPwd
+                },
+                success: function(rm) {
+                    if (rm.code === 1) {
+                        window.location.href = "/admin/login"
+                    } else {
+                        toastr.error(rm.msg)
+                    }
+                }
+            });
+        });
+    }
+    $(function() {
+        renderContainer('/pages/channels.html');
+
+        // 计算高度
+        var minH = document.documentElement.clientHeight - 148;
+        $("#container-fluid").css("min-height", minH + "px");
+        valInfoForm(); // 个人信息修改--表单验证
+        valAccountForm(); // 账户信息修改--表单验证
+        $("#info-modal").on("show.bs.modal", function() {
+            $('#info-form')[0].reset();
+            $('#info-form').data('bootstrapValidator').resetForm();
+        })
+        $("#account-modal").on("show.bs.modal", function() {
+            $('#account-form')[0].reset();
+            $('#account-form').data('bootstrapValidator').resetForm();
+        })
+    })
+</script>
+
+<!--左侧菜单树-->
+<script type="text/javascript">
+    var setting = {
+        async: {
+            enable: true,
+            type: 'get',
+            url: 'api/channels',
+            dataType: 'text',
+            dataFilter: ajaxDataFilter
+        },
+        view: {
+            showLine: false,
+            showIcon: false,
+            nameIsHTML: true,
+            dblClickExpand: false,
+            selectedMulti: false,
+            addDiyDom: addDiyDom
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: '_id',
+                pIdKey: 'p_id',
+                rootPid: 0
+            },
+            keep: {
+                parent: true
+            },
+            key: {
+                url: 'xUrl'
+            }
+        },
+        callback: {
+            beforeExpand: beforeExpand,
+            onExpand: onExpand,
+            onClick: onClick
+        }
+    };
+
+
+    /**
+     *  异步加载树
+     * @param treeId
+     * @param parentNode
+     * @param responseData
+     */
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+        var data = responseData.result;
+        return data;
+    }
+
+    /**
+     *  用于在节点上固定显示自定义图标等
+     *
+     * @param treeId
+     * @param treeNode
+     *
+     */
+    function addDiyDom(treeId, treeNode) {
+        if (treeNode.level < 2) {
+            var switchObj = $("#" + treeNode.tId + "_switch"),
+                icoObj = $("#" + treeNode.tId + "_ico");
+            switchObj.remove();
+            icoObj.before(switchObj);
+            var sObj = $("#" + treeNode.tId + "_span");
+            sObj.attr('title', sObj.html());
+        }
+        if (treeNode.level == 2) {
+            $("#" + treeNode.tId + "_switch").remove();
+        }
+        if (treeNode.isParent == false) {
+            $("#" + treeNode.tId + "_switch").remove();
+        }
+    }
+
+    /**
+     * 树展开之前的操作
+     * @param treeId
+     * @param treeNode
+     */
+    var curExpandNode = null;
+
+    function beforeExpand(treeId, treeNode) {
+
+        var pNode = curExpandNode ? curExpandNode.getParentNode() : null;
+        var treeNodeP = treeNode.parentTId ? treeNode.getParentNode() : null;
+        var zTree = $.fn.zTree.getZTreeObj("menu-tree");
+
+        for (var i = 0, l = !treeNodeP ? 0 : treeNodeP.children.length; i < l; i++) {
+            if (treeNode !== treeNodeP.children[i]) {
+                zTree.expandNode(treeNodeP.children[i], false);
+            }
+        }
+        while (pNode) {
+            if (pNode === treeNode) {
+                break;
+            }
+            pNode = pNode.getParentNode();
+        }
+        if (!pNode) {
+            singlePath(treeNode);
+        }
+
+    }
+
+    /**
+     * 展开/折叠节点，树节点保持始终只展开一条路径
+     * @param newNode
+     */
+    function singlePath(newNode) {
+        if (newNode === curExpandNode) return;
+        var zTree = $.fn.zTree.getZTreeObj("menu-tree"),
+            rootNodes, tmpRoot, tmpTId, i, j, n;
+
+        if (!curExpandNode) {
+            tmpRoot = newNode;
+            while (tmpRoot) {
+                tmpTId = tmpRoot.tId;
+                tmpRoot = tmpRoot.getParentNode();
+            }
+            rootNodes = zTree.getNodes();
+            for (i = 0, j = rootNodes.length; i < j; i++) {
+                n = rootNodes[i];
+                if (n.tId != tmpTId) {
+                    zTree.expandNode(n, false);
+                }
+            }
+        } else if (curExpandNode && curExpandNode.open) {
+            if (newNode.parentTId === curExpandNode.parentTId) {
+                zTree.expandNode(curExpandNode, false);
+            } else {
+                var newParents = [];
+                while (newNode) {
+                    newNode = newNode.getParentNode();
+                    if (newNode === curExpandNode) {
+                        newParents = null;
+                        break;
+                    } else if (newNode) {
+                        newParents.push(newNode);
+                    }
+                }
+                if (newParents != null) {
+                    var oldNode = curExpandNode;
+                    var oldParents = [];
+                    while (oldNode) {
+                        oldNode = oldNode.getParentNode();
+                        if (oldNode) {
+                            oldParents.push(oldNode);
+                        }
+                    }
+                    if (newParents.length > 0) {
+                        zTree.expandNode(oldParents[Math.abs(oldParents.length - newParents.length) - 1], false);
+                    } else {
+                        zTree.expandNode(oldParents[oldParents.length - 1], false);
+                    }
+                }
+            }
+        }
+        curExpandNode = newNode;
+    }
+
+    /**
+     * 树展开时的操作
+     * @param event
+     * @param treeId
+     * @param treeNode
+     */
+    function onExpand(event, treeId, treeNode) {
+        curExpandNode = treeNode;
+    }
+
+    /**
+     * 点击节点时的操作
+     * @param event
+     * @param treeId
+     * @param treeNode
+     */
+    var lastSelectedNode; // 上一个被选中的节点
+    function onClick(event, treeId, treeNode) {
+        if (lastSelectedNode == null) { // 若第一次选中节点,则将当前节点赋给lastSelectedNode
+            lastSelectedNode = treeNode;
+        }
+        if (treeNode.tId != lastSelectedNode.tId) {
+            $('#' + lastSelectedNode.tId + '_a').removeAttr('style'); // 控制选中节点样式
+        }
+        var zTree = $.fn.zTree.getZTreeObj("menu-tree");
+        lastSelectedNode = zTree.getSelectedNodes()[0]; // 将当前被选中的节点赋给lastSelectedNode
+        zTree.expandNode(treeNode, null, null, null, true);
+
+        if (treeNode.isParent == false) {
+
+            $('#' + treeNode.tId + '_a').css('color', '#BFFFFF');
+            channelId = treeNode._id;
+            channelName = treeNode.name;
+            channelType = treeNode.type;
+            //渲染面包屑导航.
+            var names = [];
+            var nownode = treeNode;
+            content_breadcrumb_str = ''
+            for (;;) {
+                if (nownode) {
+                    content_breadcrumb_str = "<li>" + nownode.name + "</li>" + content_breadcrumb_str
+                    nownode = nownode.getParentNode();
+                } else break
+            }
+            renderContainer('/pages/contents.html');
+        }
+    }
+
+    $(function() {
+        $.fn.zTree.init($("#menu-tree"), setting);
+    })
+</script>
+</body>
+
+</html>
