@@ -25,7 +25,6 @@ router.get('/', function (req, res) {
                 res.render('admin', {"title": "Admin", "user": bo});
             }
         });
-
     } else {
         res.redirect('/admin/login');
     }
@@ -63,7 +62,7 @@ router.route('/register')
 
             //输入密码是否一致
             if (password != repwd) {
-                res.render('admin/register', {"title": "Register", "msg": "两次输入密码不一致！"});
+                res.render('register', {"title": "Register", "msg": "两次输入密码不一致！"});
                 return;
             }
             var user = {};
@@ -82,7 +81,7 @@ router.route('/register')
                 if (!count) {
                     UserService.save(user, function (err, obj) {
                         if (err) {
-                            res.render('admin/register', {"title": "Register", "msg": "注册失败，请重试！"});
+                            res.render('register', {"title": "Register", "msg": "注册失败，请重试！"});
                         }
                         if (obj) {
                             req.session.uid = obj._id;
@@ -90,11 +89,11 @@ router.route('/register')
                         }
                     });
                 } else {
-                    res.render('admin/register', {"title": "Register", "msg": "登录名已存在！"});
+                    res.render('register', {"title": "Register", "msg": "登录名已存在！"});
                 }
             });
         } else {
-            res.render('admin/register', {"title": "Register", "msg": "请完整并正确输入注册信息！"});
+            res.render('register', {"title": "Register", "msg": "请完整并正确输入注册信息！"});
         }
     });
 
@@ -123,11 +122,11 @@ router.route('/login')
                             req.session.uid = bo["_id"];
                             res.redirect('/admin');
                         } else {
-                            res.render('admin/login', {"title": "Login", "msg": "用户名或密码错误！"});
+                            res.render('login', {"title": "Login", "msg": "用户名或密码错误！"});
                         }
                     });
                 } else {
-                    res.render('admin/login', {"title": "Login", "msg": "请输入用户名和密码！"});
+                    res.render('login', {"title": "Login", "msg": "请输入用户名和密码！"});
                 }
             } else {
                 res.redirect('/admin/register');
