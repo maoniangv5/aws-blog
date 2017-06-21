@@ -1,10 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><%= title%></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sentir, Responsive admin and dashboard UI kits template">
+    <meta name="keywords" content="admin,bootstrap,template,responsive admin,dashboard template,web apps template">
+    <meta name="author" content="Ari Rusmanto, Isoh Design Studio, Warung Themes">
+    <title>Log Blog</title>
+
+    <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MAIN CSS (REQUIRED ALL PAGE)-->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!--本页单独样式-->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none !important;
+            cursor:pointer;
+        }
+    </style>
 </head>
+
 <body>
-<h1><%= title%></h1>
+<div class="blog-detail-image">
+    <img src="" class="img-blog" alt="">
+    <div class="blog-title">
+        <p style="margin-top: 10%"><strong>CHEM</strong> hosted</p>
+        <h1 style="margin-top: 5%">生活不止眼前的苟且</h1>
+        <h3>还有眼后你看不到的苟且</h3>
+        <a href="/index"><h4 style="margin-top: 10%">-- HERE --</h4></a>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/pagejs/welcome.js"></script>
 </body>
 </html>
