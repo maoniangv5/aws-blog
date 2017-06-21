@@ -6,11 +6,15 @@ var categorySchema = mongoose.Schema({
         type: String,
         required: true
     }, // 栏目名
+    'simple': {
+        type: String,
+        required: true
+    }, // 英文简称
     'style': {
         type: String,
         required: true
     }, // 样式
-    'is_show': {
+    'is_pub': {
         type: Boolean,
         required: true
     }, // 是否展示

@@ -4,7 +4,6 @@ var crypto = require('../../common/encrypt');
 var RestMsg = require('../../common/restmsg'); // 引用restmsg模块
 var UserService = require('../../service/user/userservice'); // 引用UserService模块
 
-
 /**
  * 访问首页
  */
@@ -22,7 +21,7 @@ router.get('/', function (req, res) {
                 bo = bo.toObject();
                 delete bo.password;
                 bo.phone = (bo.phone ? bo.phone : '');
-                res.render('admin', {"title": "Admin", "user": bo});
+                res.render('admin', {"title": "Admin", "user": bo, "url": ""});
             }
         });
     } else {
@@ -39,7 +38,7 @@ router.route('/register')
         if (req.session.uid) {
             res.redirect('/admin/login');
         } else {
-            UserService.count({}, function(err, count) {
+            UserService.count({}, function (err, count) {
                 if (err) {
                     restmsg.errorMsg(err);
                     res.send(restmsg);
@@ -135,7 +134,6 @@ router.route('/login')
 
     });
 
-
 /**
  * 退出登录
  */
@@ -146,6 +144,17 @@ router.get('/logout', function (req, res) {
         req.session.destroy();
     }
     res.redirect('/admin/login')
+});
+
+/**
+ * 菜单切换
+ */
+router.get('/category', function (req, res, next) {
+    res.render('admin', {"title": "Category", "url": "/pages/my-category.html"});
+});
+
+router.get('/content', function (req, res, next) {
+    res.render('admin', {"title": "Content", "url": "/pages/my-content.html"});
 });
 
 module.exports = router;

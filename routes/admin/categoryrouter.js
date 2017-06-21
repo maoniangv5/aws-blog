@@ -7,14 +7,13 @@ router.route('/')
 
     .get(function (req, res, next) {
         var restmsg = new RestMsg();
-
         CategoryService.find(function (err, obj) {
             if (err) {
                 restmsg.errorMsg(err);
                 res.send(restmsg);
                 return;
             }
-            if (obj) { // 查询出page后封装返回
+            if (obj) {
                 restmsg.successMsg();
                 restmsg.setResult(obj);
                 res.send(restmsg);
@@ -26,35 +25,17 @@ router.route('/')
     .post(function (req, res, next) {
         var restmsg = new RestMsg();
         var content = { // content对象
-            'title': req.body.title,
-            'img': req.body.img,
-            'url': req.body.url,
-            'person': req.body.person,
-            'content': req.body.content,
+            'name': req.body.name,
+            'simple': req.body.simple.split(' ').join('-'),
+            'is_pub': req.body.is_pub,
+            'is_remove': req.body.is_remove,
             'desc': req.body.desc,
-            'is_display': req.body.is_display,
-            'order': req.body.order,
-            'times': 0
+            'style': req.body.style
         }
 
-        // 非空校验
-        if (!content.title) {
-            restmsg.errorMsg('请输入文章标题');
-            res.send(restmsg);
-            return;
-        }
-        if (!content.is_display) {
-            restmsg.errorMsg('请选择文章是否显示');
-            res.send(restmsg);
-            return;
-        }
-        if (!content.order) {
-            restmsg.errorMsg('请输入文章排序值');
-            res.send(restmsg);
-            return;
-        }
         CategoryService.save(content, function (err, obj) {
             if (err) {
+                console.log(err)
                 restmsg.errorMsg(err);
                 res.send(restmsg);
                 return;

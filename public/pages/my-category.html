@@ -1,0 +1,106 @@
+<link href="/plugins/icheck/skins/all.css" rel="stylesheet">
+<!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+<link href="/css/font-awesome.min.css" rel="stylesheet">
+<!-- Begin page heading -->
+<!-- End page heading -->
+
+<!-- Begin breadcrumb -->
+<ol class="breadcrumb default square rsaquo sm" id="content-breadcrumb">
+    <li><a href="#"><i class="fa fa-home"></i></a></li>
+    <li>我的分类</li>
+</ol>
+<!-- End breadcrumb -->
+<!-- BEGIN SiTE INFORMATIONS -->
+<div class="full no-border container-fluid">
+    <div class="row">
+        <!--分类列表-->
+        <div id="category-list" class="col-md-3 col-xs-12 the-box">
+            <div>
+                <h3 class="small-title">分类列表
+                    <button id="add-category" class="btn btn-primary btn-sm pull-right" type="button"
+                            title="新增根节点"><i class="fa fa-plus"></i></button>
+                </h3>
+                <hr class="all-hr"/>
+            </div>
+            <!-- /.input-group Search -->
+            <div class="tree-container slimscroll">
+                <div id="category-group" class="panel-group" id="accordion-2">
+
+                </div>
+            </div>
+            <!-- /.tree-container -->
+        </div>
+
+        <!--详细展示-->
+        <div id="category-info" class="col-md-9 col-xs-12 the-box">
+            <h3 class="small-title">分类详情</h3>
+            <hr class="all-hr"/>
+        </div>
+
+        <!--新增分类-->
+        <div id="category-add" class="col-md-9 col-xs-12 the-box hide">
+            <h3 class="small-title">分类新增</h3>
+            <hr class="all-hr"/>
+            <div class="form-group col-md-6">
+                <label>分类名称</label>
+                <input id="name" type="text" class="form-control" placeholder="请输入分类名称">
+            </div>
+            <div class="form-group col-md-6">
+                <label>英文简称</label>
+                <input id="simple" type="text" class="form-control" placeholder="请输入英文简称">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>分类样式</label>
+                <select id="style" data-placeholder="请选择分类样式" class="form-control chosen-select"
+                        tabindex="2">
+                    <option value="default" class="text-default" selected>Default</option>
+                    <option value="primary" class="text-primary">Primary</option>
+                    <option value="info" class="text-info">Info</option>
+                    <option value="success" class="text-success">Success</option>
+                    <option value="warning" class="text-warning">Warning</option>
+                    <option value="danger" class="text-danger">Danger</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>描述信息</label>
+                <textarea id="desc" class="form-control no-resize" rows="1" placeholder="请输入描述信息"></textarea>
+            </div>
+            <div class="form-group col-md-6">
+                <label>是否公开</label>
+                <div>
+                    <label class="col-md-6 col-xs-6">
+                        <input type="radio" value="true" class="icheck-cat" name="is-pub" checked>
+                        是
+                    </label>
+                    <label class="col-md-6 col-xs-6">
+                        <input type="radio" value="false" class="icheck-cat" name="is-pub">
+                        否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label>是否可移除</label>
+                <div>
+                    <label class="col-md-6 col-xs-6">
+                        <input type="radio" value="true" class="icheck-cat" name="is-remove" checked>
+                        是
+                    </label>
+                    <label class="col-md-6 col-xs-6">
+                        <input type="radio" value="false" class="icheck-cat" name="is-remove">
+                        否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <button class="btn btn-warning btn-sm" id="cancel">取消</button>
+                <button class="btn btn-info btn-sm" id="save">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END SiTE INFORMATIONS -->
+
+<script src="/plugins/icheck/icheck.min.js"></script>
+<script src="/pagejs/my-category.js"></script>

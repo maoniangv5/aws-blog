@@ -5,12 +5,12 @@
     <title>Log Blog - <%= title %></title>
 
     <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MAIN CSS (REQUIRED ALL PAGE)-->
-    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet">
+    <link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
 
             <!-- Begin Logo brand -->
             <div class="logo-brand">
-                <a href="admin"><img src="img/logo/sentir-logo-primary.png" alt="Sentir logo"></a>
+                <a href="/admin"><img src="/img/logo/sentir-logo-primary.png" alt="Sentir logo"></a>
             </div><!-- /.logo-brand -->
             <!-- End Logo brand -->
 
@@ -50,8 +50,8 @@
                 <ul class="nav-user navbar-right">
                     <li class="dropdown">
                         <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="img/avatar/avatar.png" class="avatar img-circle" alt="Avatar">
-                            你好，<strong><%= user.nickname %></strong>
+                            <img src="/img/avatar/avatar.png" class="avatar img-circle" alt="Avatar">
+                            你好，<strong></strong>
                         </a>
                         <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
                             <li>
@@ -85,15 +85,15 @@
     <div class="sidebar-left sidebar-nicescroller">
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="#" class="category" data-href="/pages/category.html">
-                    <i class="fa fa-dashboard icon-sidebar"></i>我的分类
+                <a href="/admin/category" class="category">
+                    <i class="fa fa-dashboard icon-sidebar"></i>分类管理
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a id="category-list" href="#">
                     <i class="fa fa-dashboard icon-sidebar"></i>
                     <i class="fa fa-angle-right chevron-icon-sidebar"></i>
-                    内容管理
+                    博客管理
                     <span id="category-total" class="badge badge-warning span-sidebar"></span>
                 </a>
 
@@ -373,34 +373,42 @@
 <!-- END BACK TO TOP -->
 
 <!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="plugins/retina/retina.min.js"></script>
-<script src="plugins/nicescroll/jquery.nicescroll.js"></script>
-<script src="plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="plugins/backstretch/jquery.backstretch.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/plugins/retina/retina.min.js"></script>
+<script src="/plugins/nicescroll/jquery.nicescroll.js"></script>
+<script src="/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/plugins/backstretch/jquery.backstretch.min.js"></script>
 
 <!-- PLUGINS -->
-<script src="plugins/skycons/skycons.js"></script>
-<script src="plugins/prettify/prettify.js"></script>
-<script src="plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
-<script src="plugins/chosen/chosen.jquery.min.js"></script>
-<script src="plugins/icheck/icheck.min.js"></script>
-<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
-<script src="plugins/timepicker/bootstrap-timepicker.js"></script>
-<script src="plugins/mask/jquery.mask.min.js"></script>
-<script src="plugins/slider/bootstrap-slider.js"></script>
-<script src="plugins/sweetalert/sweetalert.min.js"></script>
-<script src="plugins/owl-carousel/owl.carousel.min.js"></script>
-<script src="plugins/toastr/toastr.js"></script>
+<script src="/plugins/skycons/skycons.js"></script>
+<script src="/plugins/prettify/prettify.js"></script>
+<script src="/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/plugins/chosen/chosen.jquery.min.js"></script>
+<script src="/plugins/icheck/icheck.min.js"></script>
+<script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="/plugins/timepicker/bootstrap-timepicker.js"></script>
+<script src="/plugins/mask/jquery.mask.min.js"></script>
+<script src="/plugins/slider/bootstrap-slider.js"></script>
+<script src="/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="/plugins/owl-carousel/owl.carousel.min.js"></script>
+<script src="/plugins/toastr/toastr.js"></script>
 
 <!-- MAIN APPS JS -->
-<script src="pagejs/apps.js"></script>
-<script src="pagejs/demo-panel.js"></script>
-<script src="pagejs/admin.js"></script>
+<script src="/pagejs/apps.js"></script>
+<script src="/pagejs/demo-panel.js"></script>
+<script src="/pagejs/admin.js"></script>
 
 <script>
-
+    $(function() {
+        var url = '<%= url %>';
+        if (url) {
+            $('#container-fluid').load(url);
+            if (url === "/pages/my-content.html") {
+                $("#category-list").trigger("click");
+            }
+        }
+    })
 </script>
 
 </body>
