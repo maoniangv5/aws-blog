@@ -1,7 +1,3 @@
-/**
- * 用户模块服务层
- * @type {user|exports}
- */
 var User = require('./model/userbo');
 var ServiceGenerator = require('../common/servicegenerator');
 

@@ -1,7 +1,3 @@
-/**
- * 项目BO
- * @type {mongoose|exports}
- */
 var mongoose = require('../../../db/db');
 
 // 定义用户集合的结构
@@ -31,6 +27,4 @@ var userSchema = mongoose.Schema({
     versionKey: false
 });
 
-var user = mongoose.model('users', userSchema); // 将定义好的结构封装成model
-
-module.exports = user; // 导出userbo模块
+module.exports = mongoose.model('users', userSchema, 'users');
