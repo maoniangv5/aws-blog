@@ -1,7 +1,3 @@
-/**
- * Created by wuyao on 2016/6/21.
- */
-
 var Page = require('../../common/page');
 
 function ServiceGenerator() {

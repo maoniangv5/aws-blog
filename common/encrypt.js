@@ -1,8 +1,3 @@
-/**
- * 加密工具
- * Created by duanying on 2015/8/13.
- */
-
 var crypto = require('crypto');
 var key = "db-extract@0123x100$#365#$"; // 加密的密钥
 
