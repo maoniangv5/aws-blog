@@ -1,10 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title><%= title%></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Ari Rusmanto, Isoh Design Studio, Warung Themes">
+    <title>Log Blog - <%= title %></title>
+
+    <!-- BOOTSTRAP CSS (REQUIRED ALL PAGE)-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MAIN CSS (REQUIRED ALL PAGE)-->
+    <link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/plugins/toastr/toastr.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
-<h1><%= title%></h1>
+
+<body class="login tooltips  bg-info">
+<div class="login-wrapper">
+    <form role="form" method="post">
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="text" class="form-control no-border input-lg rounded" placeholder="昵称" name="nickname" autofocus required>
+            <span class="fa fa-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="text" class="form-control no-border input-lg rounded" placeholder="登录名" required name="username">
+            <span class="fa fa-user form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="email" class="form-control no-border input-lg rounded" placeholder="邮箱" required name="email">
+            <span class="fa fa-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="number" class="form-control no-border input-lg rounded" placeholder="电话号码（非必须）" name="phone" maxlength="11">
+            <span class="fa fa-phone form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="password" class="form-control no-border input-lg rounded" placeholder="密码" name="pwd" required autocomplete="new-password">
+            <span class="fa fa-unlock-alt form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback left-feedback no-label">
+            <input type="password" class="form-control no-border input-lg rounded" placeholder="重复密码" name="repwd" required autocomplete="new-password">
+            <span class="fa fa-lock form-control-feedback"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">注册</button>
+        </div>
+    </form>
+</div>
+<!-- /.login-wrapper -->
+<!--
+    ===========================================================
+    END PAGE
+    ===========================================================
+    -->
+
+<!--
+    ===========================================================
+    Placed at the end of the document so the pages load faster
+    ===========================================================
+    -->
+<!-- MAIN JAVASRCIPT (REQUIRED ALL PAGE)-->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/plugins/toastr/toastr.js"></script>
+
+
+<script type="text/javascript">
+    $(function() {
+        var msg = '<%= title %>';
+        if (msg) {
+            toastr.error(msg);
+        }
+    })
+</script>
 </body>
 </html>
