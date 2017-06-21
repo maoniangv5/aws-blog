@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var index = require('./index/indexrouter');
 var users = require('./admin/userrouter');
-var category = require('./admin/category');
+var category = require('./admin/categoryrouter');
 
 router.use('/', index);
 router.use('/admin', users);
