@@ -22,7 +22,7 @@ var userSchema = mongoose.Schema({
         type: String,
         required: true
     }, // 邮箱
-    "tel": String//电话号码
+    "phone": String//电话号码
 },{
     "timestamps": {
         createdAt: 'created_at',   //创建时间
