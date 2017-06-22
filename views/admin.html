@@ -9,6 +9,8 @@
 
     <!-- MAIN CSS (REQUIRED ALL PAGE)-->
     <link href="/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/plugins/magnific-popup/magnific-popup.min.css" rel="stylesheet">
+
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/style-responsive.css" rel="stylesheet">
 
@@ -90,16 +92,18 @@
                 </a>
             </li>
             <li>
-                <a id="category-list" href="#">
+                <a id="category" href="/admin/content">
                     <i class="fa fa-dashboard icon-sidebar"></i>
-                    <i class="fa fa-angle-right chevron-icon-sidebar"></i>
                     博客管理
                     <span id="category-total" class="badge badge-warning span-sidebar"></span>
                 </a>
-
-                <ul id="category-li" class="submenu">
-
-                </ul>
+            </li>
+            <li>
+                <a id="images" href="/admin/images">
+                    <i class="fa fa-dashboard icon-sidebar"></i>
+                    图片管理
+                    <span id="photo-total" class="badge badge-warning span-sidebar">555555</span>
+                </a>
             </li>
         </ul>
     </div><!-- /.sidebar-left -->
@@ -405,7 +409,12 @@
         if (url) {
             $('#container-fluid').load(url);
             if (url === "/pages/my-content.html") {
-                $("#category-list").trigger("click");
+                $("#category").trigger("click");
+                return;
+            }
+            if (url === "/pages/my-images.html") {
+                $("#images").trigger("click");
+                return;
             }
         }
     })

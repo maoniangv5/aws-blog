@@ -1,0 +1,48 @@
+<!-- Begin breadcrumb -->
+<ol class="breadcrumb default square rsaquo sm">
+    <li><a href="#"><i class="fa fa-home"></i></a></li>
+    <li>图片管理</li>
+</ol>
+<!-- End breadcrumb -->
+
+<div class="the-box no-border">
+    <div class="row">
+        <div class="col-sm-8">
+            <ul class="nav nav-pills nav-success">
+                <button class="btn btn-info"><i class="fa fa-picture-o"></i> 我上传的</button>
+                <button class="btn btn-success"><i class="fa fa-users"></i> 文章引用</a></button>
+                <button class="btn btn-primary"><i class="fa fa-camera"></i> 外链引用</a></button>
+            </ul>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button class="btn btn-warning" data-toggle="modal" data-target="#img-upload-modal"><i
+                    class="fa fa-cloud-upload"></i> 添加图片
+            </button>
+        </div>
+        <div class="modal fade" id="img-upload-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content modal-no-shadow modal-no-border">
+                    <div class="modal-header bg-warning no-border">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">上传图片</h4>
+                    </div>
+                    <div class="modal-body">
+                        图片列表
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-warning">上传</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-masonry magnific-popup-wrap">
+    <ol id="img-show-list">
+
+    </ol>
+</div>
+
+<script src="/pagejs/my-images.js"></script>

@@ -162,4 +162,8 @@ router.get('/content', function (req, res, next) {
     res.render('admin', {"title": "Content", "url": "/pages/my-content.html"});
 });
 
+router.get('/images', function (req, res, next) {
+    res.render('admin', {"title": "Content", "url": "/pages/my-images.html"});
+});
+
 module.exports = router;
