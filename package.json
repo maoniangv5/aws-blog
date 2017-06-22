@@ -18,6 +18,7 @@
     "mongoose": "^4.10.7",
     "morgan": "^1.8.2",
     "serve-favicon": "^2.4.3",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "wechat": "^2.1.0"
   }
 }
