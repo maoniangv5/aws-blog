@@ -109,7 +109,7 @@
                     var result = data.result;
                     var str = '';
                     result.map(function (index, key) {
-                        str += '<div class="item-masonry">' +
+                        str += '<li class="item-masonry">' +
                             '<div class="the-box full no-border featured-post-wide mansory-inner">' +
                             '<a class="zooming" href="' + index.url + '" title="' + index.title + '">' +
                             '<img src="' + index.url + '" class="featured-img mfp-fade item-gallery img-responsive" alt="image" height="100%" width="auto">' +
@@ -120,7 +120,7 @@
                             '<p style="margin: 0">' + index.desc + '</p>' +
                             '<p class="additional-post-wrap" style="margin: 0">' +
                             '<span class="additional-post" style="padding: 0"><i class="fa fa-clock-o"></i>April 20</span>' +
-                            '</p></div> </div> </div>'
+                            '</p></div> </div> </li>'
                     })
                     $('#img-show-list').html(str);
                     initImgMasonry();
