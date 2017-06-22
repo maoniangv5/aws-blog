@@ -14,8 +14,8 @@
                 <button class="btn btn-primary"><i class="fa fa-camera"></i> 外链引用</a></button>
             </ul>
         </div>
-        <div class="col-sm-4 text-right">
-            <button class="btn btn-warning" data-toggle="modal" data-target="#img-upload-modal"><i
+        <div id="container" class="col-sm-4 text-right">
+            <button id="pickfiles" class="btn btn-warning"><i
                     class="fa fa-cloud-upload"></i> 添加图片
             </button>
         </div>
@@ -26,12 +26,11 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">上传图片</h4>
                     </div>
-                    <div class="modal-body">
-                        图片列表
+                    <div id="filelist" class="modal-body">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-warning">上传</button>
+                        <button id="uploadfiles" type="button" class="btn btn-warning">上传</button>
                     </div>
                 </div>
             </div>
@@ -45,4 +44,59 @@
     </ol>
 </div>
 
+<script src="/plugins/plupload/plupload.full.min.js"></script>
+<script src="/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="/pagejs/my-images.js"></script>
+<script>
+    $(document).ready(function () {
+        function $p(id) {
+            return document.getElementById(id);
+        }
+
+        var uploader = new plupload.Uploader({
+            runtimes: 'html5',
+            browse_button: 'pickfiles', // you can pass in id...
+            container: $p('container'), // ... or DOM Element itself
+            max_file_size: '10mb',
+            unique_names: false,
+            url: "/api/fileupload/img",
+            filters: [
+                {title: "Image files", extensions: "jpg,gif,png"}
+            ],
+
+            init: {
+                PostInit: function () {
+                    $p('uploadfiles').onclick = function () {
+                        uploader.start();
+                        return false;
+                    };
+                },
+
+                FilesAdded: function (up, files) {
+                    $("#filelist").empty();
+                    $("#img-upload-modal").modal('show');
+                    plupload.each(files, function (file) {
+                        $p('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + '<span></span></div>';
+                    });
+                },
+
+                UploadProgress: function (up, files) {
+                    console.log(files.percent)
+//                    plupload.each(files, function (file) {
+//                        $p('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + '<span>' + file.percent + '</span></div>';
+//                    });
+                },
+
+                FileUploaded: function (up, file, res) {
+                    var data = JSON.parse(res.response)
+                    if (data.code == 1) {
+                        $("#img-upload-modal").modal('hide');
+                    }
+                    var url = data.result.url;
+                    console.log(data)
+                }
+            }
+        });
+        uploader.init();
+    });
+</script>
