@@ -81,19 +81,18 @@
                 },
 
                 UploadProgress: function (up, files) {
-                    console.log(files.percent)
 //                    plupload.each(files, function (file) {
 //                        $p('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + '<span>' + file.percent + '</span></div>';
 //                    });
                 },
-
                 FileUploaded: function (up, file, res) {
-                    var data = JSON.parse(res.response)
-                    if (data.code == 1) {
+
+                },
+                UploadComplete: function (up, file) {
+                    toastr.success('上传成功');
+                    setTimeout(function () {
                         $("#img-upload-modal").modal('hide');
-                    }
-                    var url = data.result.url;
-                    console.log(data)
+                    },1000)
                 }
             }
         });
