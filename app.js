@@ -9,6 +9,7 @@ var MongoStore = require('connect-mongo')(session);
 
 var mongoose = require("./db/db");
 var router = require('./routes/router');
+var Intercept =  require('./service/common/interceptservice');
 
 var app = express();
 
@@ -35,6 +36,9 @@ app.use(session({
         mongooseConnection: mongoose.connection
     })
 }));
+
+// 登陆拦截，暂不使用
+// app.use(Intercept);
 
 app.use('/', router);
 

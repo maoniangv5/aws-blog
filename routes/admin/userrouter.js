@@ -101,7 +101,12 @@ router.route('/register')
  */
 router.route('/login')
     .get(function (req, res) {
-        res.render('login', {"title": "Login", "msg": ""});
+        var restmsg = new RestMsg();
+        if (req.session.uid) {
+            res.redirect('/admin')
+        } else {
+            res.render('login', {"title": "Login", "msg": ""});
+        }
     })
 
     .post(function (req, res) {
