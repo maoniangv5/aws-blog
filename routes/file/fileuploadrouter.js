@@ -1,7 +1,3 @@
-/**
- * 文件上传 API路由请求
- * @type {*|exports|module.exports}
- */
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
