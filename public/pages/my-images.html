@@ -123,6 +123,7 @@
                             '</p></div> </div> </li>'
                     })
                     $('#img-show-list').html(str);
+                    $("#image-total").text(result.length);
                     initImgMasonry();
                 } else {
                     toastr.error("查询失败:" + data.msg + "！");
