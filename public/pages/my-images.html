@@ -15,7 +15,7 @@
             </ul>
         </div>
         <div id="container" class="col-sm-4 text-right">
-            <button id="pickfiles" class="btn btn-warning"><i
+            <button id="pickfiles" class="btn btn-warning" data-toggle="modal" data-target="#img-upload-modal"><i
                     class="fa fa-cloud-upload"></i> 添加图片
             </button>
         </div>
@@ -27,6 +27,19 @@
                         <h4 class="modal-title">上传图片</h4>
                     </div>
                     <div id="filelist" class="modal-body">
+                        <div class="form-group row">
+                                <span class="input-group-btn col-xs-3">
+                                    <span class="btn btn-primary btn-file">
+                                        <i class="fa fa-plus"></i> 选择图片<input type="file" multiple name="">
+                                    </span>
+                                </span>
+                                <span class="input-group-btn col-xs-9">
+                                    <span class="btn ">
+                                        <i class="fa fa-plus"></i> 选择图片
+                                    </span>
+                                </span>
+                            </div><!-- /.input-group -->
+                        </div><!-- /.form-group -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -38,7 +51,7 @@
     </div>
 </div>
 
-<div class="container-masonry magnific-popup-wrap">
+<div class="hide container-masonry magnific-popup-wrap">
     <ol id="img-show-list">
 
     </ol>
@@ -55,7 +68,7 @@
 
         var uploader = new plupload.Uploader({
             runtimes: 'html5',
-            browse_button: 'pickfiles', // you can pass in id...
+            browse_button: 'xxxx', // you can pass in id...
             container: $p('container'), // ... or DOM Element itself
             max_file_size: '10mb',
             unique_names: false,
@@ -66,7 +79,7 @@
 
             init: {
                 PostInit: function () {
-                    $p('uploadfiles').onclick = function () {
+                    $p('xxxx').onclick = function () {
                         uploader.start();
                         return false;
                     };
@@ -98,5 +111,22 @@
             }
         });
         uploader.init();
+    });
+
+    $('#file').on('change', function () {
+        for (var i = 0; i < this.files.length; i++) {
+            if (this.files[i].type != 'image/gif') {
+                lrz(this.files[i]).then(function (rst) {
+                    // 处理成功会执行
+                    console.log(rst);
+                }).catch(function (err) {
+                    // 处理失败会执行
+                }).always(function () {
+                    // 不管是成功失败，都会执行
+                });
+            } else {
+                console.log(this.files[i]);
+            }
+        }
     });
 </script>
