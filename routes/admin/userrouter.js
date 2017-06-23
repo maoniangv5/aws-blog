@@ -155,15 +155,28 @@ router.get('/logout', function (req, res) {
  * 菜单切换
  */
 router.get('/category', function (req, res, next) {
-    res.render('admin', {"title": "Category", "url": "/pages/my-category.html"});
+    if (req.session.uid) {
+        res.render('admin', {"title": "Category", "url": "/pages/my-category.html"});
+    } else {
+        res.redirect('/index');
+    }
+
 });
 
 router.get('/content', function (req, res, next) {
-    res.render('admin', {"title": "Content", "url": "/pages/my-content.html"});
+    if (req.session.uid) {
+        res.render('admin', {"title": "Content", "url": "/pages/my-content.html"});
+    } else {
+        res.redirect('/index');
+    }
 });
 
 router.get('/images', function (req, res, next) {
-    res.render('admin', {"title": "Content", "url": "/pages/my-images.html"});
+    if (req.session.uid) {
+        res.render('admin', {"title": "Content", "url": "/pages/my-images.html"});
+    } else {
+        res.redirect('/index');
+    }
 });
 
 module.exports = router;
