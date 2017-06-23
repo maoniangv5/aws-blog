@@ -20,30 +20,34 @@
             </button>
         </div>
         <div class="modal fade" id="img-upload-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="width: 700px">
                 <div class="modal-content modal-no-shadow modal-no-border">
                     <div class="modal-header bg-warning no-border">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">上传图片</h4>
                     </div>
-                    <div id="filelist" class="modal-body">
-                        <div class="form-group row">
-                                <span class="input-group-btn col-xs-3">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-btn">
                                     <span class="btn btn-primary btn-file">
-                                        <i class="fa fa-plus"></i> 选择图片<input type="file" multiple name="">
+                                        <i class="fa fa-plus"></i> 选择图片<input id="file-select" type="file" multiple>
                                     </span>
                                 </span>
-                                <span class="input-group-btn col-xs-9">
-                                    <span class="btn ">
-                                        <i class="fa fa-plus"></i> 选择图片
-                                    </span>
-                                </span>
+                                <input id="file-selected" type="text" class="form-control" value=""
+                                       placeholder="请选择要上传的图片" readonly>
                             </div><!-- /.input-group -->
                         </div><!-- /.form-group -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button id="uploadfiles" type="button" class="btn btn-warning">上传</button>
+                        <hr class="all-hr"/>
+                        <div class="form-group">
+                            <div id="file-list" class="form-group" style="width: inherit;word-wrap: break-word;margin-top: 15px">
+                            </div>
+                        </div>
+                        <hr class="all-hr" />
+                        <div  class="form-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button id="uploadfiles" type="button" class="btn btn-warning">上传</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,19 +118,19 @@
         getAllImgs();
     });
 
-    $('#file').on('change', function () {
+    $('#file-select').on('change', function () {
+        $("#file-selected").val('已选择' + this.files.length + '张图片！');
         for (var i = 0; i < this.files.length; i++) {
             if (this.files[i].type != 'image/gif') {
                 lrz(this.files[i]).then(function (rst) {
                     // 处理成功会执行
-                    console.log(rst);
-                }).catch(function (err) {
-                    // 处理失败会执行
-                }).always(function () {
-                    // 不管是成功失败，都会执行
-                });
+                    $("#file-list").append('<span class="input-group-btn"><span class="btn">' + rst.origin.name + '</span></span>');
+                })
             } else {
-                console.log(this.files[i]);
+                lrz(this.files[i]).then(function (rst) {
+                    // 处理成功会执行
+                    $("#file-list").append('<span class="input-group-btn"><span class="btn">' + rst.origin.name + '</span></span>');
+                })
             }
         }
     });
