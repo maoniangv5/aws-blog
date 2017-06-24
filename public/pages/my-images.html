@@ -14,40 +14,35 @@
                 <button class="btn btn-primary"><i class="fa fa-camera"></i> 外链引用</a></button>
             </ul>
         </div>
-        <div id="container" class="col-sm-4 text-right">
-            <button id="pickfiles" class="btn btn-warning" data-toggle="modal" data-target="#img-upload-modal"><i
+        <div class="col-sm-4 text-right">
+            <button id="file-add" class="btn btn-warning"><i
                     class="fa fa-cloud-upload"></i> 添加图片
             </button>
         </div>
         <div class="modal fade" id="img-upload-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" style="width: 700px">
+            <div class="modal-dialog">
                 <div class="modal-content modal-no-shadow modal-no-border">
                     <div class="modal-header bg-warning no-border">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h4 class="modal-title">上传图片</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-primary btn-file">
-                                        <i class="fa fa-plus"></i> 选择图片<input id="file-select" type="file" multiple>
-                                    </span>
-                                </span>
-                                <input id="file-selected" type="text" class="form-control" value=""
-                                       placeholder="请选择要上传的图片" readonly>
-                            </div><!-- /.input-group -->
-                        </div><!-- /.form-group -->
-                        <hr class="all-hr"/>
-                        <div class="form-group">
-                            <div id="file-list" class="form-group" style="width: inherit;word-wrap: break-word;margin-top: 15px">
-                            </div>
+                        <div class="input-group">
+                             <span class="input-group-btn">
+                                 <span id="file-input" class="btn btn-primary btn-file">
+                                 </span>
+                             </span>
+                            <input id="file-selected" type="text" class="form-control" value=""
+                                   placeholder="请选择要上传的图片" readonly>
+                        </div><!-- /.input-group -->
+
+                        <div id="file-list" class="input-group"
+                             style="width: inherit;word-wrap: break-word;margin-top: 15px">
                         </div>
-                        <hr class="all-hr" />
-                        <div  class="form-group">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button id="uploadfiles" type="button" class="btn btn-warning">上传</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default">取消</button>
+                        <button id="file-upload" type="button" class="btn btn-warning img-uploading">上传</button>
                     </div>
                 </div>
             </div>
@@ -60,81 +55,82 @@
 
     </ol>
 </div>
-
+<script src="/js/bootstrap.min.js"></script>
 <script src="/plugins/plupload/plupload.full.min.js"></script>
 <script src="/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="/pagejs/my-images.js"></script>
 <script>
-    $(document).ready(function () {
-        function $p(id) {
-            return document.getElementById(id);
-        }
-
-        var uploader = new plupload.Uploader({
-            runtimes: 'html5',
-            browse_button: 'xxxx', // you can pass in id...
-            container: $p('container'), // ... or DOM Element itself
-            max_file_size: '10mb',
-            unique_names: false,
-            url: "/api/fileupload/img",
-            filters: [
-                {title: "Image files", extensions: "jpg,gif,png"}
-            ],
-
-            init: {
-                PostInit: function () {
-                    $p('xxxx').onclick = function () {
-                        uploader.start();
-                        return false;
-                    };
-                },
-
-                FilesAdded: function (up, files) {
-                    $("#filelist").empty();
-                    $("#img-upload-modal").modal('show');
-                    plupload.each(files, function (file) {
-                        $p('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + '<span></span></div>';
-                    });
-                },
-
-                UploadProgress: function (up, files) {
-                    console.log(files.percent)
-//                    plupload.each(files, function (file) {
-//                        $p('filelist').innerHTML += '<div id="' + file.id + '">' + file.name + '<span>' + file.percent + '</span></div>';
-//                    });
-                },
-
-                FileUploaded: function (up, file, res) {
-                    var data = JSON.parse(res.response)
-                    if (data.code == 1) {
-                        $("#img-upload-modal").modal('hide');
-                    }
-                    var url = data.result.url;
-                    console.log(data)
+    // 初始化图片压缩
+    function initLrz() {
+        $('#file-select').on('change', function () {
+            $("#file-selected").val('已选择图片：' + this.files.length + '，累计上传图片：' + $("p[id^=img-prev-]").length);
+            var file_list = [];
+            for (var i = 0; i < this.files.length; i++) {
+                file_list.push(this.files[i]);
+            }
+            file_list.map(function (index, key) {
+                if (index.type != 'image/gif') {
+                    lrz(index, {width: 1000, quality: 0.85}).then(function (rst) {
+                        // 处理成功会执行
+                        console.log(rst)
+                        var unicode = rst.base64Len + String(rst.fileLen) + rst.origin.lastModified;
+                        if ($("p[id^=img-prev-" + unicode + "]").length === 0) {
+                            $("#file-list").append('<div style="padding: 5px;display: inline-block" data-container="body" data-toggle="popover" data-content="<h4>Popover 中的一些内容 —— options 方法</h4>"><img src="' + rst.base64 +
+                                '" width="85" /><p id="img-prev-' + unicode + '" style="text-align: center">待处理...</p></div>');
+                            $("#file-upload").one('click', function () {
+                                uploadImgs(rst.formData, unicode, file_list.length);
+                            })
+                        }
+                    })
+                } else {
+                    lrz(this.files[i]).then(function (rst) {
+                        // 处理成功会执行
+                        $("#file-list").append('<span class="input-group-btn"><span class="btn">' + rst.origin.name + '</span></span>');
+                    })
                 }
+            })
+            $("[data-toggle='popover']").popover();
+        });
+    }
+
+    // 上传modal
+    function showUpload() {
+        $("#file-list").html('');
+        $("#file-selected").val('');
+        $("#file-input").html('<i class="fa fa-plus"></i> 选择图片<input id="file-select" type="file" multiple>');
+        $("#img-upload-modal").modal('show');
+        initLrz();
+    }
+
+    // 上传图片
+    function uploadImgs(data, i, len) {
+        $("#img-prev-" + i).html('<i class="fa fa-circle-o-notch fa-spin text-warning" />');
+        $(".img-uploading").addClass('disabled', "disabled");
+        $("button[data-dismiss='modal']").data('dismiss', '');
+        $("#img-upload-modal").attr('data-backdrop', "static");
+        $.ajax({
+            url: '/api/fileupload/img',
+            type: 'POST',
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function (rm) {
+                $("#img-prev-" + i).html('<i class="fa fa-check text-success" />');
+                if ($("p[id^='img-prev']").find('.fa-circle-o-notch').length === 0) {
+                    $(".img-uploading").removeClass('disabled');
+                    $("button[data-dismiss='modal']").data('dismiss', 'modal');
+                    $("#img-upload-modal").removeAttr('data-backdrop');
+                    $("#file-selected").val('已上传图片：' + len + '，累计上传图片：' + $("p[id^=img-prev-]").length);
+                    toastr.success("上传成功！");
+                }
+            },
+            error: function (rm) {
+                toastr.error("上传失败：" + rm.msg);
             }
         });
-        uploader.init();
-        getAllImgs();
-    });
+    }
 
-    $('#file-select').on('change', function () {
-        $("#file-selected").val('已选择' + this.files.length + '张图片！');
-        for (var i = 0; i < this.files.length; i++) {
-            if (this.files[i].type != 'image/gif') {
-                lrz(this.files[i]).then(function (rst) {
-                    // 处理成功会执行
-                    $("#file-list").append('<span class="input-group-btn"><span class="btn">' + rst.origin.name + '</span></span>');
-                })
-            } else {
-                lrz(this.files[i]).then(function (rst) {
-                    // 处理成功会执行
-                    $("#file-list").append('<span class="input-group-btn"><span class="btn">' + rst.origin.name + '</span></span>');
-                })
-            }
-        }
-    });
-
+    // 获得所有图片
     function getAllImgs() {
         $.ajax({
             url: '/api/image',
@@ -202,4 +198,12 @@
             mainClass: 'mfp-fade'
         });
     }
+
+    $(function () {
+        $("[data-toggle='popover']").popover();
+//        getAllImgs();
+        $("#file-add").on('click', function () {
+            showUpload();
+        })
+    })
 </script>
