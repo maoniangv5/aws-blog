@@ -55,11 +55,18 @@
 
     </ol>
 </div>
-<script src="/js/bootstrap.min.js"></script>
 <script src="/plugins/plupload/plupload.full.min.js"></script>
 <script src="/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="/pagejs/my-images.js"></script>
 <script>
+
+    $(function () {
+        getAllImgs();
+        $("#file-add").on('click', function () {
+            showUpload();
+        })
+    })
+
     // 初始化图片压缩
     function initLrz() {
         $('#file-select').on('change', function () {
@@ -75,7 +82,7 @@
                         console.log(rst)
                         var unicode = rst.base64Len + String(rst.fileLen) + rst.origin.lastModified;
                         if ($("p[id^=img-prev-" + unicode + "]").length === 0) {
-                            $("#file-list").append('<div style="padding: 5px;display: inline-block" data-container="body" data-toggle="popover" data-content="<h4>Popover 中的一些内容 —— options 方法</h4>"><img src="' + rst.base64 +
+                            $("#file-list").append('<div style="padding: 5px;display: inline-block"><img src="' + rst.base64 +
                                 '" width="85" /><p id="img-prev-' + unicode + '" style="text-align: center">待处理...</p></div>');
                             $("#file-upload").one('click', function () {
                                 uploadImgs(rst.formData, unicode, file_list.length);
@@ -89,7 +96,6 @@
                     })
                 }
             })
-            $("[data-toggle='popover']").popover();
         });
     }
 
@@ -199,11 +205,4 @@
         });
     }
 
-    $(function () {
-    	getAllImgs();
-        $("[data-toggle='popover']").popover();
-        $("#file-add").on('click', function () {
-            showUpload();
-        })
-    })
 </script>
