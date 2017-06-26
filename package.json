@@ -16,10 +16,11 @@
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.8",
+    "mongoose": "^4.11.0",
     "morgan": "^1.8.2",
     "multer": "^0.1.8",
     "serve-favicon": "^2.4.3",
+    "translate-api": "^0.3.12",
     "underscore": "^1.8.3",
     "wechat": "^2.1.0"
   }

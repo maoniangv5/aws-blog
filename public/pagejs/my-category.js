@@ -27,19 +27,13 @@ function saveCategory() {
         return;
     }
 
-    if ($("#simple").val()) {
-        query.simple = $("#simple").val().trim();
-    } else {
-        toastr.warning("请输入英文简称！");
-        return;
-    }
-
     if ($("#desc").val()) {
         query.desc = $("#desc").val().trim();
     } else {
         toastr.warning("请输入描述信息！");
         return;
     }
+
     query.style = $("#style").val();
     query.is_pub = $('input:radio:checked')[0].defaultValue;
     query.is_remove = $('input:radio:checked')[1].defaultValue;
