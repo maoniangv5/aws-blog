@@ -12,11 +12,11 @@ var imgs_dir = config.blog_images_config.imgs_dir;
 var imgs_url = config.blog_images_config.imgs_url;
 
 //初始化multer
-var mwMulter1 = multer({
+var mwMulter = multer({
     dest: imgs_dir
 });
 
-router.post('/img', mwMulter1.any('files'), function (req, res, next) { // 上传图片API
+router.post('/img', mwMulter.single('files'), function (req, res, next) { // 上传图片API
     if (!fs.existsSync(imgs_dir)) {
         fs.mkdirSync(imgs_dir);
     }
