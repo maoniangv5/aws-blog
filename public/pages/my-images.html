@@ -103,7 +103,8 @@
     function showUpload() {
         $("#file-list").html('');
         $("#file-selected").val('');
-        $("#file-input").html('<i class="fa fa-plus"></i> 选择图片<input id="file-select" type="file" multiple>');
+        $("#file-input").html('<i class="fa fa-plus"></i> 选择图片' +
+            '<input id="file-select" type="file" accept="image/gif, image/jpg, image/png, image/jpeg" multiple>');
         $("#img-upload-modal").modal('show');
         initLrz();
     }
