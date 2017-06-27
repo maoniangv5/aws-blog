@@ -83,7 +83,7 @@
                         var unicode = rst.base64Len + String(rst.fileLen) + rst.origin.lastModified;
                         if ($("p[id^=img-prev-" + unicode + "]").length === 0) {
                             $("#file-list").append('<div style="padding: 5px;display: inline-block"><img src="' + rst.base64 +
-                                '" width="85" /><p id="img-prev-' + unicode + '" style="text-align: center">待处理...</p></div>');
+                                '" width="85" /><p id="img-prev-' + unicode + '" style="text-align: center">待上传...</p></div>');
                             $("#file-upload").one('click', function () {
                                 uploadImgs(rst.formData, unicode, file_list.length);
                             })
@@ -110,7 +110,6 @@
 
     // 上传图片
     function uploadImgs(data, i, len) {
-        $("#img-prev-" + i).html('<i class="fa fa-circle-o-notch fa-spin text-warning" />');
         $(".img-uploading").addClass('disabled', "disabled");
         $("button[data-dismiss='modal']").data('dismiss', '');
         $("#img-upload-modal").attr('data-backdrop', "static");
@@ -120,6 +119,16 @@
             data: data,
             processData: false,
             contentType: false,
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener("progress", function (evt) {
+                        var per = Math.floor(100 * evt.loaded / evt.total) + '%';
+                        $("#img-prev-" + i).html(per + ' <i class="fa fa-circle-o-notch fa-spin text-warning" />');
+                    }, false);
+                    return xhr;
+                }
+            },
             success: function (rm) {
                 $("#img-prev-" + i).html('<i class="fa fa-check text-success" />');
                 if ($("p[id^='img-prev']").find('.fa-circle-o-notch').length === 0) {
@@ -134,6 +143,12 @@
                 toastr.error("上传失败：" + rm.msg);
             }
         });
+    }
+
+    function onprogress(evt) {
+        var loaded = evt.loaded;     //已经上传大小情况
+        var tot = evt.total;      //附件总大小
+        var per = Math.floor(100 * loaded / tot);  //已经上传的百分比
     }
 
     // 获得所有图片
