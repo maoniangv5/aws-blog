@@ -1,8 +1,10 @@
+<link href="/plugins/icheck/skins/all.css" rel="stylesheet">
+<link href="/css/bootstrap-select.min.css" rel="stylesheet">
 <!--顶部-->
 <ol class="breadcrumb default square rsaquo sm" id="content-breadcrumb">
     <li><a href="#"><i class="fa fa-home"></i></a></li>
     <li>内容管理</li>
-    <li class="category-name"></li>
+    <li class="category-name">全部</li>
 </ol>
 
 <!--列表和搜索区域-->
@@ -11,21 +13,11 @@
     <!--搜索条件-->
     <div id="search-area">
         <div class="btn-group">
-            <input type="text" class="form-control" placeholder="标题搜索">
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default">全部</button>
-            <button type="button" class="btn btn-warning">公开</button>
-            <button type="button" class="btn btn-info">私有</button>
-        </div>
-        <div class="btn-group">
-            <button id="search-btn" class="btn btn-primary">查询</button>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-default" onclick="">重置</button>
+            <select style="width:100%;" class="form-control selectpicker" id="category-menu" data-live-search="true">
+            </select>
         </div>
         <div class="btn-group pull-right">
-            <button id="new-btn" class="btn btn-info" type="button" title="新增内容">
+            <button id="new-btn" class="btn btn-info hide" type="button" title="新增内容">
                 <i class="fa fa-plus"></i></button>
         </div>
     </div>
@@ -37,13 +29,9 @@
                        style="margin-bottom: 0px;text-align: center">
                     <thead>
                     <tr>
-                        <th style="text-align: center;">序号</th>
                         <th style="text-align: center;">标题</th>
-                        <th style="text-align: center;">阅读</th>
-                        <th style="text-align: center;">踩</th>
-                        <th style="text-align: center;">赞</th>
-                        <th style="text-align: center;">公开</th>
-                        <th style="text-align: center;">更新时间</th>
+                        <th style="text-align: center;">类别</th>
+                        <th style="text-align: center;">时间</th>
                         <th style="text-align: center;">操作</th>
                     </tr>
                     </thead>
@@ -106,9 +94,12 @@
                 <input id="content-tags" type="text" class="form-control" placeholder="标签">
             </div>
         </div>
-        <div class="col-md-12">
-            <div id="summernote"></div>
+        <div class="form-group col-md-12  col-xs-12">
+            <div class="input-group col-md-12 col-xs-12">
+                <input id="content-content" type="text" class="form-control" placeholder="内容">
+            </div>
         </div>
+
         <div class="form-group col-md-6  col-xs-12" style="margin: 0 -15px 15px 15px">
             <label class="col-md-6 col-xs-6" style="padding: 10px">
                 <input type="radio" value="true" class="icheck-con pull-left" name="is-pub" checked>
@@ -123,109 +114,78 @@
             <div class=" pull-right">
                 <button id="reset-btn" class="btn btn-warning">重置</button>
                 <button id="cancel-btn" class="btn btn-danger">取消</button>
-                <button id="save-btn" class="btn btn-info" onclick="">提交</button>
+                <button id="save-btn" class="btn btn-info" data-category="" onclick="">提交</button>
             </div>
         </div>
     </div>
 
-</div>
-<div id="img-upload" class="modal fade" aria-hidden="false" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">插入图片</h4>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12" style="padding: 0">
-                    <label>上传图片</label>
-                </div>
-                <div class="form-group col-md-12" style="padding: 0;">
-                    <div id="container-img" class="input-group">
-                        <input id="new-img-name" type="text" class="form-control" readonly>
-                        <span class="input-group-btn">
-                            <span id="new-img-select" class="btn btn-default btn-file">
-                                选择图片 <input type="file" name="">
-                            </span>
-                        </span>
-                        <span class="input-group-btn">
-							<span id="new-img-upload" class="btn btn-info">
-								上传
-                            </span>
-                        </span>
-                    </div><!-- /.input-group -->
-                </div>
-                <div style="margin: 15px 0" class="row">
-                    <label>图片地址</label>
-                    <div class="input-group col-md-12">
-                        <input type="text" class="form-control" readonly>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button href="#" class="btn btn-primary note-image-btn disabled" disabled>插入图片
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="/js/moment.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/plugins/icheck/icheck.min.js"></script>
 
 <script>
-    // 页面加载执行函数
-    $(function () {
-        $("#new-btn").on('click', function () {
-            newContent();
-        })
-        $("#search-btn").on('click', function () {
-//            initDataList();
-        });
-    })
 
-    // 初始化summernote
-    function initSummernote() {
-        $('#summernote').summernote({
-            lang: 'zh-CN',
-            placeholder: '在此处输入... ...',
-            minHeight: 450,
-            maxHeight: 700,
-            toolbar: [
-                ['Paragraph ', ['style', 'ul', 'ol', 'paragraph', 'height']],
-                ['Font ', ['fontname', 'fontsize', 'color', 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                ['Insert', ['link', 'picture', 'video', 'table', 'hr']],
-                ['Misc', ['fullscreen', 'codeview', 'undo', 'redo', 'help']]
-            ],
-            dialogsFade: true,
-            callbacks: {
-                onImageUpload: function(files, editor, $editable) {
-                    sendFile(files);
+    // 渲染分类下拉菜单
+    function getCategoryMenu() {
+        $.ajax({
+            url: '/api/category',
+            type: 'GET',
+            success: function (rm) {
+                if (rm.code == 1) {
+                    var data = rm.result;
+                    var category_str = '<option value="" data-style="default">全部</option>';
+                    data.map(function (index, key) {
+                        category_str += '<option value="' + index.simple + '" data-style="' + index.style + '">' + index.name + '</option>';
+                    });
+                    $("#category-menu").html(category_str);
+                } else {
+                    toastr.error("查询分类失败:" + rm.msg + "！");
                 }
             }
         });
     }
 
-    function sendFile(files, editor, $editable) {
-        var data = new FormData();
-        data.append("files", files[0]);
+    // 渲染表格
+    function initCategoryTable(category) {
+        var data = {};
+        if (category) {
+            data.category = category;
+        }
+        console.log(data)
         $.ajax({
-            data : data,
-            type : "POST",
-            url : "/api/files/img", //图片上传出来的url，返回的是图片上传后的路径，http格式
-            cache : false,
-            contentType : false,
-            processData : false,
-            dataType : "json",
-            success: function(data) {//data是返回的hash,key之类的值，key是定义的文件名
-                $('#summernote').summernote('insertImage', data.result.url);
-                console.log(data.result)
-            },
-            error:function(){
-                alert("上传失败");
+            url: '/api/content',
+            type: 'GET',
+            data: data,
+            success: function (rm) {
+                if (rm.code == 1) {
+                    var data = rm.result;
+                    var str = '';
+
+                    if (data.length == 0) {
+                        str += '<tr><td colspan="4">暂无数据</td>></tr>';
+                    } else {
+                        data.map(function (index, key) {
+                            var operat = '<apan title="修改" href="#" onclick=""><i class="fa fa-edit"></i></apan>&nbsp;&nbsp;' +
+                                '<span title="删除" href="#" onclick=""><i class="fa fa-trash-o"></i></span>&nbsp;&nbsp;' +
+                                '<span title="详情" href="#"  onclick=""><i class="fa fa-list-alt"></i></span>&nbsp;&nbsp;';
+
+                            str += '<tr>' +
+                                '<td>' + index.title + '</td>' +
+                                '<td>' + index.category + '</td>' +
+                                '<td>' + moment(index.updatedAt).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
+                                '<td>' + operat + '</td>' +
+                                '</tr>';
+                        })
+                    }
+                    $("#content-table tbody").html(str);
+                } else {
+                    toastr.error("查询分类失败:" + rm.msg + "！");
+                }
             }
         });
+
     }
 
     // 初始化icheck
@@ -239,103 +199,8 @@
         }
     }
 
-    // 编辑
-    function editContent(id) {
-        $("#head-area").addClass('hide');
-        $("#new-content-area").removeClass('hide');
-        initSummernote();
-//        resetEditContent(id);
-        $('#reset-btn').unbind(); //移除所有
-        $('#save-btn').unbind(); //移除所有
-        $("#reset-btn").attr('onclick', '')
-            .attr('onclick', 'resetEditContent(\'' + id + '\')')
-        $("#save-btn").attr('onclick', '')
-            .attr('onclick', 'saveEditContent(\'' + id + '\')')
-        $("#cancel").attr('onclick', 'cancelBtn()')
-    }
-
-    // 保存编辑
-    function saveEditContent(id) {
-        var query = {};
-        query.title = $('#new-title').val();
-        query.order = $('#new-order').val();
-        query.is_display = $('#new-display').val() === 'true';
-        query.desc = $('#new-desc').val();
-        query.img = $('#new-img').val();
-        query.url = $('#new-href').val();
-        query.person = {
-            name: $('#new-name').val(),
-            honor: $('#new-honor').val()
-        }
-        // 获取值
-        var reg = /(<div>)?(.+)(<\/div>)?/
-        query.content = reg.exec($('.summernote-lg').summernote('code'))[2];
-
-        $.ajax({
-            url: 'api/channels/' + channelId + '/contents/' + id,
-            type: 'PUT',
-            data: query,
-            success: function (data) {
-                if (data.code == 1) {
-                    toastr.success("内容修改成功！");
-                    initDataTable();
-                    $("#search-area").removeClass('hide');
-                    $("#new-btn").removeClass('hide');
-                    $("#reset-btn").addClass('hide');
-                    $("#new-save").addClass('hide');
-                    $("#new-area").addClass('hide');
-                    $("#new-content-area").addClass('hide');
-                    $("#summernote").addClass('hide');
-                    $("#list-area").removeClass('hide');
-                    $("#search-area").removeClass('hide');
-                } else {
-                    toastr.error("内容修改失败:" + data.msg);
-                }
-                $('#save').unbind(); //移除所有
-            }
-        });
-    }
-
-    // 删除
-    function delContent(id) {
-        swal({
-                title: "",
-                text: "是否删除此条内容？",
-                type: "warning",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-            function (isConfirm) {
-                if (isConfirm) {
-                    swal("", "已删除！", "success");
-                } else {
-                    swal("", "已取消删除！", "error");
-                }
-            });
-    }
-
-    // 详情
-    function detailContnt(cat_id, con_id) {
-        $("#show-modal").modal('show');
-        $.ajax({
-            url: '/api/category/' + cat_id + ':/content/' + con_id,
-            type: 'GET',
-            success: function (rm) {
-                var data = rm.result
-                if (rm.code == 1) {
-                    $("#show-title").text(data.content_title);
-                    $("#show-content").html(data.content_content);
-                } else {
-                    toastr.error("获取详情失败:" + rm.msg);
-                }
-            }
-        });
-    }
-
     // 新增
     function newContent() {
-        initSummernote();
         initIcheck();
         $("#head-area").addClass('hide');
         $("#new-content-area").removeClass('hide');
@@ -349,27 +214,20 @@
         $("#cancel-btn").attr('onclick', 'cancelBtn()')
     }
 
-    // 保存新增
+    // 保存
     function saveContent() {
-        var query = {};
-        var html;
-        var str = $('#summernote').summernote('code');
-        query.title = $('#content-title').val();
-        query.user_id = userId;
-        query.cat_id = categoryId;
-        query.is_pub = $('input:radio:checked')[0].defaultValue;
-        if (str.indexOf('<div>') < 0) {
-            html = str;
-        } else {
-            html = str.substring(5, str.length - 6);
+        var query = { // content对象
+            'title': $("#content-title").val(),
+            'category': $("#save-btn").data('category'),
+            'content': $("#content-content").val(),
+            'img': 'url',
+            'tags': $("#content-tags").val(),
+            'is_pub': true,
+            'is_remove': true
         }
-        if (html == '<p><br></p>') {
-            toastr.warning("文章内容不可为空！");
-            return;
-        }
-        query.content = html;
+
         $.ajax({
-            url: '/api/category/' + categoryId + '/content',
+            url: '/api/content',
             type: 'POST',
             data: query,
             success: function (data) {
@@ -377,89 +235,9 @@
                     toastr.success("新增文章成功！");
                     $("#head-area").removeClass('hide');
                     $("#new-content-area").addClass('hide');
-                    initDataList();
                 } else {
                     toastr.error("新增文章失败:" + data.msg + "！");
                 }
-            }
-        });
-    }
-
-    // 初始化table数据
-    function initDataList() {
-        $.ajax({
-            url: '/api/category/' + categoryId + '/content',
-            type: 'GET',
-            success: function (rm) {
-                if (rm.code == 1) {
-                    var data = rm.result;
-                    var str = '';
-                    var sty = '';
-                    data.map(function (index, key) {
-                        if (index.is_pub) {
-                            sty = 'warning';
-                        } else {
-                            sty = 'primary'
-                        }
-                        var operat = '<apan title="修改" href="#" onclick="editContent(\'' + index.cat_id + '\',\'' + index.objectId + '\')"><i class="fa fa-edit"></i></apan>&nbsp;&nbsp;' +
-                            '<span title="删除" href="#" onclick="delContent(\'' + index.cat_id + '\',\'' + index.objectId + '\')"><i class="fa fa-trash-o"></i></span>&nbsp;&nbsp;' +
-                            '<span title="详情" href="#"  onclick="detailContnt(\'' + index.cat_id + '\',\'' + index.objectId + '\')"><i class="fa fa-list-alt"></i></span>&nbsp;&nbsp;';
-
-                        str += '<tr>' +
-                            '<td>' + (key + 1) + '</td>' +
-                            '<td>' + index.content_title + '</td>' +
-                            '<td>' + index.read + '</td>' +
-                            '<td>' + index.dislike + '</td>' +
-                            '<td>' + index.like + '</td>' +
-                            '<td><span class="label label-' + sty + '">' + (index.is_pub ? "是" : '否') + '</span></td>' +
-                            '<td>' + moment(index.updatedAt).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
-                            '<td>' + operat + '</td>' +
-                            '</tr>';
-                    })
-                    $("#content-table tbody").html(str);
-                } else {
-                    toastr.error("查询文章失败:" + rm.msg + "！");
-                }
-            }
-        });
-    }
-
-    // 重置新增
-    function resetNewContent() {
-        $('.summernote-lg').summernote('reset');
-        $("input").val('');
-        $("#new-display").val('');
-        $("#new-desc").val('')
-        $("#new-order").val(0)
-        $("#new-img-url-area").addClass('hide')
-    }
-
-    // 重置编辑
-    function resetEditContent(id) {
-        initSummernote();
-        resetNewContent();
-        $.ajax({
-            url: 'api/channels/' + channelId + '/contents/' + id,
-            type: 'GET',
-            success: function (rm) {
-                var data = rm.result
-                if (rm.code == 1) {
-                    $("#new-title").val(data.title)
-                    $("#new-order").val(data.order)
-                    $("#new-desc").val(data.desc)
-                    $("#new-display").val(data.is_display === true ? 'true' : 'false');
-                    $("#new-img-url-area").removeClass('hide')
-                    $("#new-img").val(data.img);
-                    $('.summernote-lg').summernote('insertNode', $('<div id="summernote-textarea">' + data.content + '</div>')[0]);
-                    $("#summernote-textarea").prev().remove();
-                    $("#summernote-textarea").next().remove();
-                    $("#new-href").val(data.url);
-                    $("#new-name").val(data.person.name);
-                    $("#new-honor").val(data.person.honor);
-                } else {
-                    toastr.error("源内容获取失败:" + data.msg);
-                }
-                $('#save').unbind(); //移除所有
             }
         });
     }
@@ -470,47 +248,22 @@
         $("#new-content-area").addClass('hide');
     }
 
-    // 返回
-    function returnPage() {
-        $("#search-area").removeClass('hide');
-        $("#new-btn").removeClass('hide');
-        $("#list-area").removeClass('hide');
-        $("#search-area").removeClass('hide');
-        $("#detail-area").addClass('hide');
-        $("#return").addClass('hide');
-        $("#head-area").removeClass('hide');
-    }
-
-    //    var uploader = new plupload.Uploader({
-    //        browse_button: 'new-img-select', //触发文件选择对话框的按钮，为那个元素id
-    //        runtimes: 'html5',
-    //        max_file_size: '10mb',
-    //        unique_names: false,
-    //        multi_selection: false,
-    //        url: "/api/channels/imgs",
-    //        filters: [
-    //            {title: "Image files", extensions: "jpg,gif,png"}
-    //        ]
-    //    });
-    //
-    //    //在实例对象上调用init()方法进行初始化
-    //    uploader.init();
-    //
-    //    //绑定各种事件，并在事件监听函数中做你想做的事
-    //    uploader.bind('FilesAdded', function (uploader, files) {
-    //        $("#new-img-name").val(files[0].name)
-    //
-    //    });
-    //    uploader.bind('FileUploaded', function (uploader, files, res) {
-    //        var data = JSON.parse(res.response)
-    //        console.log(data.url)
-    //        $("#new-img").val(data.result.url)
-    //        $("#new-img-url-area").removeClass('hide')
-    //    });
-    //
-    //    //最后给"开始上传"按钮注册事件
-    //
-    //    $("#new-img-upload").bind('click', function () {
-    //        uploader.start();
-    //    })
+    // 页面加载执行函数
+    $(function () {
+        getCategoryMenu();
+        $("#new-btn").on('click', function () {
+            newContent();
+        });
+        initCategoryTable('')
+        $("#category-menu").on('change', function () {
+            $(".category-name").text($(this).find("option:selected").text())
+            if ($("#category-menu").val()) {
+                $("#new-btn").removeClass('hide');
+            } else {
+                $("#new-btn").addClass('hide');
+            }
+            $("#save-btn").data('category', '').data('category', $(this).val());
+            initCategoryTable($(this).val());
+        })
+    })
 </script>

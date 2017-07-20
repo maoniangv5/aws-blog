@@ -1,5 +1,5 @@
 <link href="/plugins/icheck/skins/all.css" rel="stylesheet">
-<!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+<link href="/css/bootstrap-select.min.css" rel="stylesheet">
 <link href="/css/font-awesome.min.css" rel="stylesheet">
 <!-- Begin page heading -->
 <!-- End page heading -->
@@ -47,14 +47,13 @@
             </div>
             <div class="form-group col-md-6">
                 <label>类别样式</label>
-                <select id="style" data-placeholder="请选择类别样式" class="form-control chosen-select"
-                        tabindex="2">
-                    <option value="default" class="text-default" selected>Default</option>
-                    <option value="primary" class="text-primary">Primary</option>
-                    <option value="info" class="text-info">Info</option>
-                    <option value="success" class="text-success">Success</option>
-                    <option value="warning" class="text-warning">Warning</option>
-                    <option value="danger" class="text-danger">Danger</option>
+                <select style="width:100%;" class="form-control selectpicker" id="style" data-live-search="true">
+                    <option value="default">Default</option>
+                    <option value="primary">Primary</option>
+                    <option value="info">Info</option>
+                    <option value="success">Success</option>
+                    <option value="warning">Warning</option>
+                    <option value="danger">Danger</option>
                 </select>
             </div>
 
@@ -98,4 +97,5 @@
 <!-- END SiTE INFORMATIONS -->
 
 <script src="/plugins/icheck/icheck.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
 <script src="/pagejs/my-category.js"></script>

@@ -9,6 +9,9 @@ function initiCheck() {
     }
 }
 
+// 初始化下拉框插件
+$('.selectpicker').selectpicker();
+
 // 新增分类
 function addCategory() {
     $("#category-add").removeClass("hide");
@@ -34,9 +37,10 @@ function saveCategory() {
         return;
     }
 
-    query.style = $("#style").val();
+    query.style = $("#style").selectpicker('val');
     query.is_pub = $('input:radio:checked')[0].defaultValue;
     query.is_remove = $('input:radio:checked')[1].defaultValue;
+    alert(query)
 
     $.ajax({
         url: '/api/category',
@@ -67,9 +71,8 @@ function cancelSave() {
 // 重置新增输入
 function resetAddInfo() {
     $("#name").val("");
-    $("#simple").val("");
     $("#desc").val("");
-    $("#style").val("default");
+    $("#style").selectpicker('val', 'default');
 }
 
 // 获取分类
@@ -108,7 +111,7 @@ function getCategory() {
                 $("#category-group").html(str_panel);
                 initPanel();
             } else {
-                toastr.error("查询分类失败:" + data.msg + "！");
+                toastr.error("查询分类失败:" + rm.msg + "！");
             }
         }
     });
