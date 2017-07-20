@@ -3,6 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 var md5 = require('md5');
 var fs = require('fs');
+var path = require('path');
 
 var config = require('../../config');
 var RestMsg = require('../../common/restmsg');
@@ -30,7 +31,7 @@ router.post('/img', mwMulter.any(), function (req, res, next) { // 上传图片A
             var old_path = files[0].path
             query.md5 = md5(buf); // 调用md5包，计算图片md5值
             query.name = files[0].originalname;
-            query.path = imgs_dir + '/' + md5(buf) + '.' + ext;
+            query.path = path.join(imgs_dir, md5(buf), '.', ext);
             query.url = imgs_url + '/' + md5(buf) + '.' + ext;
 
             // 用计算出的md5值，重新命名文件
